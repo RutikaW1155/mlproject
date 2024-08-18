@@ -1,7 +1,7 @@
 import sys
 from dataclasses import dataclass
 
-import numpy as np
+import numpy as np 
 import pandas as pd
 from sklearn.compose import ColumnTransformer
 from sklearn.impute import SimpleImputer
@@ -11,19 +11,21 @@ from sklearn.preprocessing import OneHotEncoder,StandardScaler
 from src.exception import CustomException
 from src.logger import logging
 import os
+
 from src.utils import save_object
 
 @dataclass
-class DataTransfromationConfig:
-    preprocessor_obj_file_path = os.path.join('artifacts','preprocessor.pkl')
+class DataTransformationConfig:
+    preprocessor_obj_file_path=os.path.join('artifacts',"proprocessor.pkl")
 
-class DataTransfromation:
+class DataTransformation:
     def __init__(self):
-        self.data_transformation_config = DataTransfromation()
-        
+        self.data_transformation_config=DataTransformationConfig()
+
     def get_data_transformer_object(self):
         '''
-        this function is responsible for data transfromation
+        This function si responsible for data trnasformation
+        
         '''
         try:
             numerical_columns = ["writing_score", "reading_score"]
@@ -33,8 +35,8 @@ class DataTransfromation:
                 "parental_level_of_education",
                 "lunch",
                 "test_preparation_course",
-            ]  
-            
+            ]
+
             num_pipeline= Pipeline(
                 steps=[
                 ("imputer",SimpleImputer(strategy="median")),
@@ -51,8 +53,8 @@ class DataTransfromation:
                 ("scaler",StandardScaler(with_mean=False))
                 ]
 
-            )  
-            
+            )
+
             logging.info(f"Categorical columns: {categorical_columns}")
             logging.info(f"Numerical columns: {numerical_columns}")
 
@@ -67,9 +69,9 @@ class DataTransfromation:
             )
 
             return preprocessor
-                    
+        
         except Exception as e:
-              raise CustomException(e,sys)
+            raise CustomException(e,sys)
         
     def initiate_data_transformation(self,train_path,test_path):
 
